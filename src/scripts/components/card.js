@@ -1,5 +1,3 @@
-import { openPopup } from './modal';
-
 export function deleteCard(evt) {
   const placesItem = evt.target.closest('.places__item');
   placesItem.remove();
