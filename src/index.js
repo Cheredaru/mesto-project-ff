@@ -2,6 +2,7 @@ import './styles/index.css';
 import {initialCards} from './scripts/cards.js';
 import {deleteCard, likeCard, createCard} from './scripts/components/card.js';
 import {openPopup, closePopup, overlayListener} from './scripts/components/modal.js';
+import {validationSettings, enableValidation, clearValidation} from './scripts/components/validation.js'
 
 const placesList = document.querySelector('.places__list');
 
@@ -25,6 +26,8 @@ const inputName = document.querySelector('.popup__input_type_name');
 const profileDescription = document.querySelector('.profile__description');
 const profileTitle = document.querySelector('.profile__title');
 
+enableValidation(validationSettings);
+
 function handleEditFormSubmit(evt) {
   evt.preventDefault();
   profileTitle.textContent = inputName.value;
@@ -44,12 +47,17 @@ function handleImageFormSubmit(evt,name,link,alt) {
 }
 
 function openPopupProfile(){
+  const buttonElement = document.querySelector(validationSettings.submitButtonSelector);
+  buttonElement.classList.remove('popup__button_disabled');
+  buttonElement.disabled = false;
+  clearValidation(popupProfile, validationSettings);
   inputJob.value = profileDescription.textContent;
   inputName.value = profileTitle.textContent;
   openPopup(popupProfile);
 }
 
 function openPopupAddCard(){
+  enableValidation(validationSettings);
   openPopup(popupAddCard);
 }
 
