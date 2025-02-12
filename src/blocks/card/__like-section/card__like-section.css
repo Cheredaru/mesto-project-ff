@@ -1,0 +1,7 @@
+.card__like-section{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 3px;
+  font-size: 13px;
+}
