@@ -6,121 +6,105 @@ const config = {
     'Content-Type': 'application/json'
   }
 }
-export const getAvatarInfo = () => {
-  return fetch(config.baseUrl + '/users/me', {
+
+const checkStatus = (res) =>{
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`)
+}
+
+export const getUserInfo = () => {
+  return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
+  .then((res)=>{
+    return checkStatus(res);
   })
 }
 
 export const getInitialCards = () => {
-  return fetch(config.baseUrl + '/cards',{
+  return fetch(`${config.baseUrl}/cards`,{
     headers: config.headers
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
+  .then((res)=>{
+    return checkStatus(res);
   })
 }
 
 export const editProfileData = (profileData) => {
-  return fetch(config.baseUrl + '/users/me', {
+  return fetch(`${config.baseUrl}/users/me`, {
     method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify(profileData)
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
+  .then((res)=>{
+    return checkStatus(res);
   })
 }
 
 export const addNewCard = (cardData) => {
-  return fetch(config.baseUrl + '/cards', {
+  return fetch(`${config.baseUrl}/cards`, {
     method: 'POST',
     headers: config.headers,
     body: JSON.stringify(cardData),
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
-  })
-}
-
-export const getLikesCount = () => {
-  return fetch(config.baseUrl + '/cards',{
-    headers: config.headers
-  })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
+  .then((res)=>{
+    return checkStatus(res);
   })
 }
 
 export const deleteCardFromAPI = (cardId) => {
-  return fetch(config.baseUrl + `/cards/${cardId}`,{
+  return fetch(`${config.baseUrl}/cards/${cardId}`,{
     method: 'DELETE',
     headers: config.headers,
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
-  })
-}
-
-export const addLike = (cardId) => {
-  return fetch(config.baseUrl + `/cards/likes/${cardId}`,{
-    method: 'PUT',
-    headers: config.headers,
-  })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
-  })
-}
-
-export const likeCard = (cardId, isLiked) => {
-  const method = isLiked ? 'DELETE' : 'PUT';
-
-  return fetch(config.baseUrl + `/cards/likes/${cardId}`,{
-    method: method,
-    headers: config.headers,
-  })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
+  .then((res)=>{
+    return checkStatus(res);
   })
 }
 
 export const editAvatar = (newAvatarUrl) => {
-  return fetch(config.baseUrl + `/users/me/avatar`, {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify(newAvatarUrl),
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
+  .then((res)=>{
+    return checkStatus(res);
   })
+}
+
+export const setLike = (cardId) =>{
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: config.headers,
+  })
+  .then((res)=>{
+    return checkStatus(res);
+  })
+  .then((data) => {
+    return data;
+  })
+  .catch((err) =>{
+    console.log('Ошибка при постановке лайка:', err);
+    throw err;
+  })
+}
+
+export const removeLike = (cardId) =>{
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: config.headers,
+  })
+  .then((res)=>{
+    return checkStatus(res);
+  })
+  .then((data) => {
+    return data;
+  })
+  .catch((err) => {
+    console.log('Ошибка при снятии лайка:', err);
+    throw err;
+  });
 }

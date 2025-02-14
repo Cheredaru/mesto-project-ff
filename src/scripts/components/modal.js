@@ -6,6 +6,7 @@ export function openPopup(popup){
 
 export function closePopup(popup){
   popup.classList.remove('popup_is-opened');
+  popup.classList.remove('popup_is-animated');
   document.removeEventListener('keydown', closeEscPopup);
 }
 
